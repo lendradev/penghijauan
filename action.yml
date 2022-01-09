@@ -4,7 +4,7 @@ description: "Membantu menghijaukan akun github anda yang sangat tandus"
 
 inputs:
   GITHUB_TOKEN:
-    description: "Akses github token dengan ijin repository"
+    description: "Github token dengan mencakup ijin untuk mengakses repository"
     required: true
     default: ${{ github.token }}
   REPOSITORY:

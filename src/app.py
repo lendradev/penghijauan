@@ -33,13 +33,14 @@ def generateInfo(oldInfo: str):
 
 def main():
     gh = Github(ghtoken)
+
     try:
         repo = gh.get_repo(repository)
     except GithubException:
-        print("Tidak dapat menemukan repository")
+        print("Error: gagal mendapatkan repository")
         sys.exit(1)
     
-    content = repo.get_contents("./info")
+    content = repo.get_contents("info")    
     oldInfo = decodeContent(content.content)
     newInfo = generateInfo(oldInfo)
     user = gh.get_user()
@@ -47,9 +48,9 @@ def main():
     committer = InputGitAuthor(user.name, user.email)
     if newInfo != oldInfo:
         repo.update_file(path=content.path, message=commitMessage, content=newInfo, 
-            sha=content.sha, branch=branch, committer=committer, 
-        )
-        print("Info updated")
+            sha=content.sha, branch=branch, committer=committer)
+        
+    print("Info updated")
 
 if __name__ == "__main__":
     main()
