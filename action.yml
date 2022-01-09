@@ -10,11 +10,12 @@ inputs:
   REPOSITORY:
     description: "Repository githubmu"
     required: false
-    default: ${{ github.token }}
+    default: ${{ github.repository }}
   BRANCH:
     description: "Branch yang mau dimonitoring"
     required: false
     default: "master"
+
 
 runs:
   using: "docker"

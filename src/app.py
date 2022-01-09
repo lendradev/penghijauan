@@ -1,10 +1,13 @@
 from functools import total_ordering
 import os, sys, base64, re
 from github import Github, GithubException
+from github.InputGitAuthor import InputGitAuthor
 
 ghtoken=os.getenv("INPUT_GH_TOKEN")
 repository=os.getenv("INPUT_REPOSITORY")
 branch=os.getenv("INPUT_BRANCH")
+username=os.getenv("INPUT_USERNAME")
+email=os.getenv("INPUT_EMAIL")
 
 def decodeContent(data: str):
     byte_decodes = base64.b64decode(data)
@@ -39,9 +42,14 @@ def main():
     content = repo.get_contents("./info")
     oldInfo = decodeContent(content.content)
     newInfo = generateInfo(oldInfo)
+    user = gh.get_user()
     commitMessage = f"Commit yang dibuat oleh program ini ke #{getCommitbyProgram(oldInfo)} kali\n"
+    committer = InputGitAuthor(user.name, user.email)
     if newInfo != oldInfo:
-        repo.update_file(path=content.path, message=commitMessage, content=newInfo, sha=content.sha)
+        repo.update_file(path=content.path, message=commitMessage, content=newInfo, 
+            sha=content.sha, branch=branch, committer=committer, 
+        )
+        print("Info updated")
 
 if __name__ == "__main__":
     main()
