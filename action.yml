@@ -1,0 +1,21 @@
+name: "Penghijauan"
+author: "lendradx"
+description: "Membantu menghijaukan akun github anda yang sangat tandus"
+
+inputs:
+  GITHUB_TOKEN:
+    description: "Akses github token dengan ijin repository"
+    required: true
+    default: ${{ github.token }}
+  REPOSITORY:
+    description: "Repository githubmu"
+    required: false
+    default: ${{ github.token }}
+  BRANCH:
+    description: "Branch yang mau dimonitoring"
+    required: false
+    default: "master"
+
+runs:
+  using: "docker"
+  image: "Dockerfile"s
