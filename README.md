@@ -1,6 +1,6 @@
 # Penghijauan
 
-Menghijaukan akun github anda yang tandus :v\
+Menghijaukan akun github anda yang tandus :v \
 
 ## Usage
 Belum jadi
