@@ -1,4 +1,4 @@
-import os, sys, base64, traceback
+import os, sys, base64, traceback, random
 from github import Github, GithubException
 from github.InputGitAuthor import InputGitAuthor
 
@@ -7,6 +7,10 @@ repository=os.getenv("INPUT_REPOSITORY")
 branch=os.getenv("INPUT_BRANCH")
 username=os.getenv("INPUT_USERNAME")
 email=os.getenv("INPUT_EMAIL")
+
+def generateRandomId(length: int):
+    characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+    return ''.join(random.choice(characters) for i in range(length))
 
 def decodeContent(data: str):
     byte_decodes = base64.b64decode(data)
@@ -21,8 +25,7 @@ def getCommitbyProgram(info: str):
     return totalCommit
 
 def generateInfo(totalCommit: int):
-    textInfo = f"Commit ke #{totalCommit} kali\n"
-    return f"{textInfo}"
+    return f"{generateRandomId(length=20)}"
 
 def main():
     try:    
@@ -36,7 +39,7 @@ def main():
         content = repo.get_contents("info")
         totalCommit = repo.get_commits().totalCount
         newInfo = generateInfo(totalCommit=totalCommit)
-        commitMessage = f"Commit ke #{totalCommit} kali"
+        commitMessage = f"Commit #{totalCommit}"
         committer = InputGitAuthor(username, email)
 
         try: 
