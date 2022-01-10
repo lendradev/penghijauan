@@ -20,15 +20,9 @@ def getCommitbyProgram(info: str):
     
     return totalCommit
 
-def generateInfo(oldInfo: str):
-    totalCommit = 1
-    for line in oldInfo:
-        if line != "\n":
-            totalCommit += 1
-
+def generateInfo(totalCommit: int):
     textInfo = f"Commit yang dibuat oleh program ini ke #{totalCommit} kali\n"
-    return f"{oldInfo}\n{textInfo}"
-
+    return f"{textInfo}"
 
 def main():
     try:    
@@ -38,15 +32,20 @@ def main():
         except GithubException:
             print("Error: gagal mendapatkan repository")
             sys.exit(1)
-        content = repo.get_contents("info")    
-        oldInfo = decodeContent(content.content)
-        newInfo = generateInfo(oldInfo)
-        commitMessage = f"Commit yang dibuat oleh program ini ke #{getCommitbyProgram(oldInfo)} kali"
+
+        content = repo.get_contents("info")
+        totalCommit = repo.get_commit(sha=branch).stats.total
+        newInfo = generateInfo(totalCommit=totalCommit)
+        commitMessage = f"Commit ke #{totalCommit} kali"
         committer = InputGitAuthor(username, email)
-        if newInfo != oldInfo:
+
+        try: 
             repo.update_file(path=content.path, message=commitMessage, content=newInfo, 
                 sha=content.sha, branch=branch, committer=committer)
-            
+        except Exception as error:
+            traceback.print_exc()
+            print(f"Exception occured: {str(error)}")
+
         print("Info updated")
     except Exception as e:
         traceback.print_exc()
