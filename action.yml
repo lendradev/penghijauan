@@ -3,7 +3,7 @@ author: "lendradx"
 description: "Membantu menghijaukan akun github anda yang sangat tandus"
 
 inputs:
-  GITHUB_TOKEN:
+  GH_TOKEN:
     description: "Github token dengan mencakup ijin untuk mengakses repository"
     required: true
     default: ${{ github.token }}
