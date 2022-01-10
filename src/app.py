@@ -21,7 +21,7 @@ def getCommitbyProgram(info: str):
     return totalCommit
 
 def generateInfo(totalCommit: int):
-    textInfo = f"Commit yang dibuat oleh program ini ke #{totalCommit} kali\n"
+    textInfo = f"Commit ke #{totalCommit} kali\n"
     return f"{textInfo}"
 
 def main():
@@ -34,7 +34,7 @@ def main():
             sys.exit(1)
 
         content = repo.get_contents("info")
-        totalCommit = repo.get_commit(sha=branch).stats.total
+        totalCommit = repo.get_commits().totalCount
         newInfo = generateInfo(totalCommit=totalCommit)
         commitMessage = f"Commit ke #{totalCommit} kali"
         committer = InputGitAuthor(username, email)
