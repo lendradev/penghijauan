@@ -24,7 +24,7 @@ def getCommitbyProgram(info: str):
     
     return totalCommit
 
-def generateInfo(totalCommit: int):
+def generateInfo():
     return f"{generateRandomId(length=20)}"
 
 def main():
@@ -37,8 +37,8 @@ def main():
             sys.exit(1)
 
         content = repo.get_contents("info")
-        totalCommit = repo.get_commits().totalCount
-        newInfo = generateInfo(totalCommit=totalCommit)
+        totalCommit = repo.get_commits().totalCount + 1
+        newInfo = generateInfo()
         commitMessage = f"Commit #{totalCommit}"
         committer = InputGitAuthor(username, email)
 
