@@ -15,7 +15,12 @@ inputs:
     description: "Branch yang mau dimonitoring"
     required: false
     default: "master"
-
+  EMAIL:
+    description: "Alamat email milikmu"
+    required: true
+  USERNAME:
+    description: "Username mu"
+    required: true
 
 runs:
   using: "docker"

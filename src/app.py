@@ -1,5 +1,4 @@
-from functools import total_ordering
-import os, sys, base64, re
+import os, sys, base64, traceback
 from github import Github, GithubException
 from github.InputGitAuthor import InputGitAuthor
 
@@ -32,25 +31,26 @@ def generateInfo(oldInfo: str):
 
 
 def main():
-    gh = Github(ghtoken)
-
-    try:
-        repo = gh.get_repo(repository)
-    except GithubException:
-        print("Error: gagal mendapatkan repository")
-        sys.exit(1)
-    
-    content = repo.get_contents("info")    
-    oldInfo = decodeContent(content.content)
-    newInfo = generateInfo(oldInfo)
-    user = gh.get_user()
-    commitMessage = f"Commit yang dibuat oleh program ini ke #{getCommitbyProgram(oldInfo)} kali\n"
-    committer = InputGitAuthor(user.name, user.email)
-    if newInfo != oldInfo:
-        repo.update_file(path=content.path, message=commitMessage, content=newInfo, 
-            sha=content.sha, branch=branch, committer=committer)
-        
-    print("Info updated")
+    try:    
+        gh = Github(ghtoken)
+        try:
+            repo = gh.get_repo(repository)
+        except GithubException:
+            print("Error: gagal mendapatkan repository")
+            sys.exit(1)
+        content = repo.get_contents("info")    
+        oldInfo = decodeContent(content.content)
+        newInfo = generateInfo(oldInfo)
+        commitMessage = f"Commit yang dibuat oleh program ini ke #{getCommitbyProgram(oldInfo)} kali\n"
+        committer = InputGitAuthor(username, email)
+        if newInfo != oldInfo:
+            repo.update_file(path=content.path, message=commitMessage, content=newInfo, 
+                sha=content.sha, branch=branch, committer=committer)
+            
+        print("Info updated")
+    except Exception as e:
+        traceback.print_exc()
+        print(f"Exception occured: {str(e)}")
 
 if __name__ == "__main__":
     main()
