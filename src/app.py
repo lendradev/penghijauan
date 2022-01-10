@@ -41,7 +41,7 @@ def main():
         content = repo.get_contents("info")    
         oldInfo = decodeContent(content.content)
         newInfo = generateInfo(oldInfo)
-        commitMessage = f"Commit yang dibuat oleh program ini ke #{getCommitbyProgram(oldInfo)} kali\n"
+        commitMessage = f"Commit yang dibuat oleh program ini ke #{getCommitbyProgram(oldInfo)} kali"
         committer = InputGitAuthor(username, email)
         if newInfo != oldInfo:
             repo.update_file(path=content.path, message=commitMessage, content=newInfo, 
